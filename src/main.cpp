@@ -1,3 +1,4 @@
+// Entry point
 #include "raylib.h"
 
 int main()
