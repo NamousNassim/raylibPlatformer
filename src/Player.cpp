@@ -8,8 +8,23 @@ Player::Player(float positionX, float positionY)
       velocityY(0.0f),
       gravity(900.0f),
       isGrounded(false),
-      jumpStrenght(400.0f)
+      jumpStrenght(400.0f),
+      // player_idle.png is 80x110; visible pixels span x 9-71, y 14-109.
+      // The body (without the arms sticking out) is ~50px wide, and the
+      // character is 96px tall from the top of the hair to the feet.
+      hitboxWidth(50.0f),
+      hitboxHeight(96.0f)
 {
+}
+
+Rectangle Player::GetHitbox() const
+{
+  // bottom-center anchored: the hitbox stands on the feet
+  return Rectangle{
+      positionX - hitboxWidth / 2.0f,
+      positionY - hitboxHeight,
+      hitboxWidth,
+      hitboxHeight};
 }
 
 void Player::Render()
@@ -19,23 +34,25 @@ void Player::Render()
         return;
     }
 
-     Vector2 drawPosition = {
+    // bottom-center anchored: the sprite's bottom row (the feet) sits on positionY
+    Vector2 drawPosition = {
         positionX - playerTexture.width / 2.0f,
-        positionY - playerTexture.height / 2.0f
+        positionY - playerTexture.height
     };
 
     DrawTextureV(playerTexture, drawPosition, WHITE);
-
+    DrawRectangleLinesEx(GetHitbox(), 2.0f, GREEN);
 }
 
 void Player::Update(unsigned int screenWidth,unsigned int screenHeight)
 {
   float deltaTime = GetFrameTime();
   
-  float minX = this->circleRadius;
-  float maxX = screenWidth- this->circleRadius;
+  float minX = this->hitboxWidth / 2.0f;
+  float maxX = screenWidth- (this->hitboxWidth / 2.0f);
 
-  float maxY = screenHeight - this->circleRadius;
+  // positionY is the feet, so the ground is simply the bottom of the screen
+  float maxY = static_cast<float>(screenHeight);
   
   this->velocityY += this->gravity * deltaTime;
   this->positionY += this->velocityY * deltaTime;

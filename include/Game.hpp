@@ -23,7 +23,6 @@ class Game
     int screenHeight;
     std::string gameTitle;
     bool windowInitialized = false;
-    
 
     Player player;
 

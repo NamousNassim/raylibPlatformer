@@ -25,6 +25,10 @@ class Player
         void Initialize();
         void Unload();
     private:
+    Rectangle GetHitbox() const;
+
+    // position is the player's FEET (bottom-center), not the sprite center.
+    // Sprite, hitbox and ground check are all measured from this point.
     float positionX;
     float positionY;
     float moveSpeed;
@@ -32,7 +36,8 @@ class Player
     float velocityY;
     float gravity;
     float jumpStrenght;
-
+    float hitboxWidth;
+    float hitboxHeight;
     bool isGrounded; // true - standing on the ground | false ; player on air
 
     // textures 
