@@ -7,7 +7,8 @@ Player::Player(float positionX, float positionY)
       circleRadius(50.0f),
       velocityY(0.0f),
       gravity(900.0f),
-      isGrounded(false)
+      isGrounded(false),
+      jumpStrenght(400.0f)
 {
 }
 
@@ -29,15 +30,16 @@ void Player::Update(unsigned int screenWidth,unsigned int screenHeight)
   this->velocityY += this->gravity * deltaTime;
   this->positionY += this->velocityY * deltaTime;
   //grounding logic 
-    if(this->positionY == maxY)
-    {
-      this->isGrounded == true;
-    }
+  
 
-  if(positionY > maxY)
+  if(positionY >= maxY)
   {
       this->positionY = maxY;
       this->velocityY = 0.0f;
+      this->isGrounded = true;
+  }
+  else{
+    this->isGrounded = false;
   }
 
     if(IsKeyDown(KEY_RIGHT))
@@ -48,6 +50,14 @@ void Player::Update(unsigned int screenWidth,unsigned int screenHeight)
     {
         this->positionX -= this->moveSpeed * deltaTime;
     }
+
+    // jump 
+
+    if(isGrounded && IsKeyDown(KEY_SPACE))
+      {
+        this->velocityY =- this->jumpStrenght;
+        this->isGrounded = false;
+      }
 
 
   

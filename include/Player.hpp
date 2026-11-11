@@ -28,6 +28,7 @@ class Player
     float circleRadius;
     float velocityY;
     float gravity;
+    float jumpStrenght;
 
     bool isGrounded; // true - standing on the ground | false ; player on air
 };
