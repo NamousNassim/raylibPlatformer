@@ -5,6 +5,17 @@ Game::Game(const unsigned screenWidth , const unsigned int screenHeight , const 
     this->screenWidth = screenWidth;
     this->screenHeight = screenHeight; 
     this->gameTitle = gameTitle;
+    this->positionX = this->screenWidth / 2.0f;
+    this->moveSpeed = 300.0f;
+}
+
+Game::~Game()
+{
+    if (windowInitialized)
+    {
+        CloseWindow();
+        windowInitialized = false;
+    }
 }
 
 int Game::getScreenWidth()
@@ -24,17 +35,68 @@ std::string Game::getGameTitle()
 
 void Game::Initializer()
 {
-    SetTargetFPS(60);
-   InitWindow(getScreenWidth(),getScreenHeight(),getGameTitle().c_str());
-    while(!WindowShouldClose())
+    if (windowInitialized)
     {
-        BeginDrawing();
-        DrawCircle(this->screenWidth/2 , this->screenHeight / 2, 40,RED );
-
-        EndDrawing();
+        
+        return;
     }
-    
+   InitWindow(getScreenWidth(),getScreenHeight(),getGameTitle().c_str());
+    windowInitialized = IsWindowReady();
+    if(windowInitialized)
+    {
+    SetTargetFPS(60);
+    }
+   
+ }
 
+
+void Game::Run()
+{
+    if (!this->windowInitialized)
+    {
+        return;
+    }
+while(!WindowShouldClose())
+    {
+         Update();
+        BeginDrawing();
+            Render();
+        EndDrawing();
+    }  
+       
 }
 
+void Game::Render()
+{   
+    ClearBackground(RAYWHITE);
+    DrawCircle(this->positionX , getScreenHeight()/2,this->circleRadius,RED);
+}
 
+void Game::Update()
+{
+    float deltaTime = GetFrameTime();
+
+
+    float minX = this->circleRadius;
+    float maxX = this->screenWidth - this->circleRadius;
+
+ 
+
+
+    if(IsKeyDown(KEY_RIGHT))
+    {
+        this->positionX += this->moveSpeed * deltaTime;
+    }
+    if(IsKeyDown(KEY_LEFT))
+    {
+        this->positionX -= this->moveSpeed * deltaTime;
+    }
+
+
+    // position clamp (boundries)
+     this->positionX = std::clamp(
+    this->positionX,
+    minX,
+    maxX
+);
+}
