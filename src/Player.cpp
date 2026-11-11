@@ -1,10 +1,9 @@
 #include "Player.hpp"
-
+#include "Renderer.hpp"
 Player::Player(float positionX, float positionY)
     : positionX(positionX),
       positionY(positionY),
       moveSpeed(300.0f),
-      circleRadius(50.0f),
       velocityY(0.0f),
       gravity(900.0f),
       isGrounded(false),
@@ -54,6 +53,8 @@ void Player::Update(unsigned int screenWidth,unsigned int screenHeight)
   // positionY is the feet, so the ground is simply the bottom of the screen
   float maxY = static_cast<float>(screenHeight);
   
+  float previousY = positionY;
+
   this->velocityY += this->gravity * deltaTime;
   this->positionY += this->velocityY * deltaTime;
   //grounding logic 
@@ -88,6 +89,7 @@ void Player::Update(unsigned int screenWidth,unsigned int screenHeight)
 
 
      this->positionX = std::clamp(this->positionX,minX,maxX);
+
 }
 
 void Player::Initialize()

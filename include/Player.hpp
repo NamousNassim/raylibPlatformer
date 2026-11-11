@@ -32,7 +32,6 @@ class Player
     float positionX;
     float positionY;
     float moveSpeed;
-    float circleRadius;
     float velocityY;
     float gravity;
     float jumpStrenght;
