@@ -1,11 +1,12 @@
 #pragma once
+#include"Player.hpp"
 #include "raylib.h"
 #include <string>
 #include<algorithm>
 class Game
 {
     public: 
-    Game(const unsigned int screenWidth , const unsigned int screenHeight , const std::string gameTitle);
+    Game(const unsigned int screenWidth , const unsigned int screenHeight , const std::string &gameTitle);
     ~Game();
     void Initializer();
     int getScreenWidth();
@@ -22,7 +23,8 @@ class Game
     int screenHeight;
     std::string gameTitle;
     bool windowInitialized = false;
-    float positionX;
-    float moveSpeed;
-    float circleRadius = 50.0f;
+    
+
+    Player player;
+
 };

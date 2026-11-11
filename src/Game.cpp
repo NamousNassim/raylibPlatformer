@@ -1,12 +1,14 @@
 #include "Game.hpp"
 
-Game::Game(const unsigned screenWidth , const unsigned int screenHeight , const std::string gameTitle)
+Game::Game(
+    unsigned int screenWidth,
+    unsigned int screenHeight,
+    const std::string& gameTitle
+): screenWidth(screenWidth),
+      screenHeight(screenHeight),
+      gameTitle(gameTitle),
+      player(100.0f, 300.0f)
 {
-    this->screenWidth = screenWidth;
-    this->screenHeight = screenHeight; 
-    this->gameTitle = gameTitle;
-    this->positionX = this->screenWidth / 2.0f;
-    this->moveSpeed = 300.0f;
 }
 
 Game::~Game()
@@ -58,45 +60,23 @@ void Game::Run()
     }
 while(!WindowShouldClose())
     {
-         Update();
+        Update();
         BeginDrawing();
-            Render();
+        Render();
         EndDrawing();
     }  
        
 }
 
-void Game::Render()
-{   
-    ClearBackground(RAYWHITE);
-    DrawCircle(this->positionX , getScreenHeight()/2,this->circleRadius,RED);
-}
 
 void Game::Update()
 {
-    float deltaTime = GetFrameTime();
+         player.Update(this->screenWidth);
 
+}
+void Game::Render()
+{
+        ClearBackground(RAYWHITE);
+            player.Render();
 
-    float minX = this->circleRadius;
-    float maxX = this->screenWidth - this->circleRadius;
-
- 
-
-
-    if(IsKeyDown(KEY_RIGHT))
-    {
-        this->positionX += this->moveSpeed * deltaTime;
-    }
-    if(IsKeyDown(KEY_LEFT))
-    {
-        this->positionX -= this->moveSpeed * deltaTime;
-    }
-
-
-    // position clamp (boundries)
-     this->positionX = std::clamp(
-    this->positionX,
-    minX,
-    maxX
-);
 }
