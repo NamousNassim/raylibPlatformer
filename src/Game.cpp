@@ -15,6 +15,7 @@ Game::~Game()
 {
     if (windowInitialized)
     {
+        player.Unload();
         CloseWindow();
         windowInitialized = false;
     }
@@ -47,6 +48,7 @@ void Game::Initializer()
     if(windowInitialized)
     {
     SetTargetFPS(60);
+     player.Initialize();
     }
    
  }
@@ -71,7 +73,7 @@ while(!WindowShouldClose())
 
 void Game::Update()
 {
-         player.Update(this->screenWidth);
+         player.Update(this->screenWidth,this->screenHeight);
 
 }
 void Game::Render()

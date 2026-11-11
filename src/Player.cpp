@@ -14,7 +14,17 @@ Player::Player(float positionX, float positionY)
 
 void Player::Render()
 {
-      DrawCircle(this->positionX , this->positionY,this->circleRadius,RED);
+  if (!IsTextureValid(playerTexture))
+    {
+        return;
+    }
+
+     Vector2 drawPosition = {
+        positionX - playerTexture.width / 2.0f,
+        positionY - playerTexture.height / 2.0f
+    };
+
+    DrawTextureV(playerTexture, drawPosition, WHITE);
 
 }
 
@@ -53,16 +63,34 @@ void Player::Update(unsigned int screenWidth,unsigned int screenHeight)
 
     // jump 
 
-    if(isGrounded && IsKeyDown(KEY_SPACE))
+    if(isGrounded && IsKeyPressed(KEY_SPACE))
       {
         this->velocityY =- this->jumpStrenght;
         this->isGrounded = false;
       }
 
 
-  
-
      this->positionX = std::clamp(this->positionX,minX,maxX);
+}
+
+void Player::Initialize()
+{
+  this->playerTexture = LoadTexture("assets/textures/Player/player_idle.png");
+  if(!IsTextureValid(this->playerTexture))
+  {
+    std::cerr << "Failed to load player texture!\n";
+
+    return;
+  }
+
+}
 
 
+void Player::Unload()
+{
+  if(IsTextureValid(this->playerTexture))
+  {
+      UnloadTexture(this->playerTexture);
+      this->playerTexture = {};
+  }
 }

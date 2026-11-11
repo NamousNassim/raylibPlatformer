@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include<algorithm>
+#include<iostream>
 
 /*
 velocityY = 0
@@ -21,6 +22,8 @@ class Player
         Player(float positionX ,float positionY);
         void Render();
         void Update(unsigned int screenWidth,unsigned int screenHeight);
+        void Initialize();
+        void Unload();
     private:
     float positionX;
     float positionY;
@@ -31,4 +34,9 @@ class Player
     float jumpStrenght;
 
     bool isGrounded; // true - standing on the ground | false ; player on air
+
+    // textures 
+
+    Texture2D playerTexture{};
+
 };
